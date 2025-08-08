@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "my-app",
+  "name": "poster-vibe-backend",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-07",
   "d1_databases": [
@@ -9,38 +9,29 @@
       "database_name": "dev-database",
       "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
     }
-  ]
-
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
-  // "kv_namespaces": [
-  //   {
-  //     "binding": "MY_KV_NAMESPACE",
-  //     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  //   }
-  // ],
-  // "r2_buckets": [
-  //   {
-  //     "binding": "MY_BUCKET",
-  //     "bucket_name": "my-bucket"
-  //   }
-  // ],
-  // "d1_databases": [
-  //   {
-  //     "binding": "MY_DB",
-  //     "database_name": "my-database",
-  //     "database_id": ""
-  //   }
-  // ],
-  // "ai": {
-  //   "binding": "AI"
-  // },
-  // "observability": {
-  //   "enabled": true,
-  //   "head_sampling_rate": 1
-  // }
+  ],
+  "env": {
+    "preview": {
+      "name": "poster-vibe-backend-preview",
+      "workers_dev": true,
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "preview-database",
+          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
+        }
+      ]
+    },
+    "production": {
+      "name": "poster-vibe-backend",
+      "workers_dev": true,
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "dev-database",
+          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
+        }
+      ]
+    }
+  }
 }
