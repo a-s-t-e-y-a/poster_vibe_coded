@@ -2,7 +2,15 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "my-app",
   "main": "src/index.ts",
-  "compatibility_date": "2025-08-07"
+  "compatibility_date": "2025-08-07",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dev-database",
+      "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
+    }
+  ]
+
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],

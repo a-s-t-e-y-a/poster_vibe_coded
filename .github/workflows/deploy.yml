@@ -1,0 +1,87 @@
+name: Cloudflare Workers CI/CD
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths:
+      - 'apps/backend/**'
+      - '.github/workflows/deploy.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - 'apps/backend/**'
+      - '.github/workflows/deploy.yml'
+
+env:
+  NODE_VERSION: '22.18.0'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apps/backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: './apps/backend/package.json'
+
+      - run: pnpm install
+      - run: pnpm run lint --if-present
+      - run: pnpm run test --if-present -- --ci
+      - run: pnpm run build --if-present
+
+  deploy-preview:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: './apps/backend'
+          # Creates an ephemeral preview on *.workers.dev
+          command: deploy --env preview --name ${{ github.event.repository.name }}-pr-${{ github.event.number }}
+
+  deploy-production:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: './apps/backend'
+          # Uses env.production from wrangler.toml (routes/zone)
+          command: deploy --env production
+
+  teardown-preview:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: './apps/backend'
+          command: delete --name ${{ github.event.repository.name }}-pr-${{ github.event.number }}
