@@ -6,14 +6,19 @@
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "lint": "eslint src/**/*.ts",
-    "format": "eslint src/**/*.ts --fix"
+    "format": "eslint src/**/*.ts --fix",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "wrangler d1 migrations apply dev-database --local",
+    "db:migrate:prod": "wrangler d1 migrations apply prod-database"
   },
   "dependencies": {
+    "@cloudflare/workers-types": "^4.20250807.0",
     "drizzle-orm": "^0.44.4",
     "hono": "^4.8.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@types/node": "^24.2.0",
     "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.39.0",
     "drizzle-kit": "^0.31.4",
