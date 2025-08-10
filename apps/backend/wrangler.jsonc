@@ -17,8 +17,9 @@
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "preview-database",
-          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
+          "database_name": "dev-database",
+          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706",
+          "migrations_dir": "./migrations"
         }
       ]
     },
@@ -29,7 +30,8 @@
         {
           "binding": "DB",
           "database_name": "dev-database",
-          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706"
+          "database_id": "3058e3a7-71c2-4f97-b7aa-0739b6c4c706",
+          "migrations_dir": "./migrations"
         }
       ]
     }

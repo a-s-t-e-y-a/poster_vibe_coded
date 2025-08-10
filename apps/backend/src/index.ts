@@ -13,22 +13,28 @@ app.get('/', (c) => {
 })
 
 app.get('/users', async (c) => {
-  return c.json({ message: 'users' })
+  const db = createDb(c.env)
+  const allUsers = await db.select().from(users)
+  return c.json(allUsers)
 })
 
 app.post('/users', async (c) => {
   const db = createDb(c.env)
   const body = await c.req.json()
+  console.log('Creating user:', body)
   try {
-    const newUser = await db.insert(users).values({
-      email: body.email,
-      username: body.username,
-      name: body.name,
-      avatar: body.avatar || null,
-    }).returning()
-    return c.json(newUser[0])
+    const insertData = {
+      email: body.email as string,
+      username: body.username as string,
+      name: body.name as string,
+      avatar: body.avatar as string,
+    }
+    console.log('Insert data:', insertData)
+    const newUser = await db.insert(users).values(insertData).returning()
+    console.log('New user created:', newUser)
+    return c.json(newUser)
   } catch (err) {
-    return c.json({ error: err instanceof Error ? err.message : 'Unknown error' }, 500)
+    return c.json({ error: err  }, 500)
   }
 })
 
@@ -56,7 +62,6 @@ app.put('/users/:id', async (c) => {
       username: body.username,
       name: body.name,
       avatar: body.avatar,
-      updatedAt: new Date(),
     })
     .where(eq(users.id, id))
     .returning()

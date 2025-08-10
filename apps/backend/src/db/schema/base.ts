@@ -1,8 +1,11 @@
 
-import { integer } from "drizzle-orm/sqlite-core/columns/integer";
+import { text , integer} from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
 
 export const timestamps = {
-    createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-    updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
-    deletedAt: integer("deleted_at", { mode: "timestamp" }),
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    createdAt: text("created_at")
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: text("updated_at")
+      .default(sql`CURRENT_TIMESTAMP`),
 }
