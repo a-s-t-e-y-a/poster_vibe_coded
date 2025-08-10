@@ -13,9 +13,7 @@ app.get('/', (c) => {
 })
 
 app.get('/users', async (c) => {
-  const db = createDb(c.env)
-  const allUsers = await db.select().from(users)
-  return c.json(allUsers)
+  return c.json({ message: 'users' })
 })
 
 app.post('/users', async (c) => {
