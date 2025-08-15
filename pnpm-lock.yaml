@@ -26,9 +26,15 @@ importers:
       drizzle-orm:
         specifier: ^0.44.4
         version: 0.44.4(@cloudflare/workers-types@4.20250807.0)(@opentelemetry/api@1.9.0)
+      drizzle-zod:
+        specifier: ^0.8.3
+        version: 0.8.3(drizzle-orm@0.44.4(@cloudflare/workers-types@4.20250807.0)(@opentelemetry/api@1.9.0))(zod@4.0.17)
       hono:
         specifier: ^4.8.12
         version: 4.8.12
+      zod:
+        specifier: 4.0.17
+        version: 4.0.17
     devDependencies:
       '@eslint/js':
         specifier: ^9.32.0
@@ -2430,6 +2436,12 @@ packages:
       sqlite3:
         optional: true
 
+  drizzle-zod@0.8.3:
+    resolution: {integrity: sha512-66yVOuvGhKJnTdiqj1/Xaaz9/qzOdRJADpDa68enqS6g3t0kpNkwNYjUuaeXgZfO/UWuIM9HIhSlJ6C5ZraMww==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      zod: ^3.25.0 || ^4.0.0
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -3930,6 +3942,9 @@ packages:
 
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
+
+  zod@4.0.17:
+    resolution: {integrity: sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ==}
 
 snapshots:
 
@@ -6079,6 +6094,11 @@ snapshots:
       '@cloudflare/workers-types': 4.20250807.0
       '@opentelemetry/api': 1.9.0
 
+  drizzle-zod@0.8.3(drizzle-orm@0.44.4(@cloudflare/workers-types@4.20250807.0)(@opentelemetry/api@1.9.0))(zod@4.0.17):
+    dependencies:
+      drizzle-orm: 0.44.4(@cloudflare/workers-types@4.20250807.0)(@opentelemetry/api@1.9.0)
+      zod: 4.0.17
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -7929,3 +7949,5 @@ snapshots:
       type-fest: 2.19.0
 
   zod@3.22.3: {}
+
+  zod@4.0.17: {}
