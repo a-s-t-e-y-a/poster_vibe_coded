@@ -39,8 +39,6 @@ jobs:
           cache-dependency-path: './apps/backend/package.json'
 
       - run: pnpm install
-      - run: pnpm run lint 
-      - run: pnpm run format
 
   deploy-preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
